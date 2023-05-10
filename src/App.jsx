@@ -1,9 +1,12 @@
 import "./App.css";
 import { GiChocolateBar } from "react-icons/gi";
 import ChocolateCard from "./components/ChocolateCard";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
+  const loadedChocolates = useLoaderData();
+  const [chocolates, setChocolates] = useState(loadedChocolates);
   return (
     <div className="container m-4 p-4">
       <h1 className="text-4xl font-bold bg-amber-950 text-white p-2 w-1/2 mx-auto rounded-lg text-center">
@@ -22,7 +25,14 @@ function App() {
             <span>Category</span> <span>Action</span>
           </div>
           <div>
-            <ChocolateCard></ChocolateCard>
+            {loadedChocolates.map((chocolate) => (
+              <ChocolateCard
+                key={chocolate._id}
+                chocolate={chocolate}
+                chocolates={chocolates}
+                setChocolates={setChocolates}
+              ></ChocolateCard>
+            ))}
           </div>
         </div>
       </div>

@@ -1,32 +1,35 @@
 import React from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const NewChocolates = () => {
-  const handleNewChocolate = (event) => {
+const UpdateChocolates = () => {
+  const chocolate = useLoaderData();
+  const { _id, name, country, photo, category } = chocolate;
+
+  const handleUpdateChocolate = (event) => {
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
     const country = form.country.value;
     const photo = form.photo.value;
-    const category = form.select.value;
-    const newChocolate = { name, country, photo, category };
-    console.log(newChocolate);
+    // const category = form.select.value;
+    const updateChocolate = { name, country, photo, category };
+    console.log(updateChocolate);
 
-    fetch("http://localhost:4000/chocolates", {
-      method: "POST",
+    fetch(`http://localhost:4000/chocolates/${_id}`, {
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(newChocolate),
+      body: JSON.stringify(updateChocolate),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.insertedId) {
+        if (data.modifiedCount > 0) {
           Swal.fire(
-            "Chocolate Added Successfully!",
+            "Chocolate Update Successfully!",
             "You clicked the button!",
             "success"
           );
@@ -48,12 +51,12 @@ const NewChocolates = () => {
         </Link>
         <div className="bg-orange-50 p-10 m-5 rounded-lg">
           <h1 className="text-black text-2xl text-center font-semibold">
-            New Chocolates
+            Update Chocolates
           </h1>
           <p className="text-black text-center">
-            Use the below form to create a new product
+            Use the below form to update a new product
           </p>
-          <form onSubmit={handleNewChocolate}>
+          <form onSubmit={handleUpdateChocolate}>
             <div className="my-4">
               <label
                 htmlFor="name"
@@ -64,6 +67,7 @@ const NewChocolates = () => {
               <input
                 type="text"
                 name="name"
+                defaultValue={name}
                 id=""
                 placeholder="Hot Pink Chocolate"
                 className="bg-white rounded-lg m-1 w-full p-2"
@@ -79,6 +83,7 @@ const NewChocolates = () => {
               <input
                 type="text"
                 name="country"
+                defaultValue={country}
                 id=""
                 placeholder="Enter Country Name"
                 className="bg-white rounded-lg m-1 w-full p-2"
@@ -94,6 +99,7 @@ const NewChocolates = () => {
               <input
                 type="text"
                 name="photo"
+                defaultValue={photo}
                 id=""
                 placeholder="Enter Photo URL"
                 className="bg-white rounded-lg m-1 w-full p-2"
@@ -109,7 +115,8 @@ const NewChocolates = () => {
               <div className="m-2">
                 <select
                   className="select w-full bg-white"
-                  id="select"
+                  id=""
+                  defaultValue={category}
                 >
                   <option>Premium</option>
                   <option>Category 1</option>
@@ -119,7 +126,7 @@ const NewChocolates = () => {
             </div>
             <input
               type="submit"
-              value="Save"
+              value="Update"
               className="btn bg-amber-700 w-full hover:btn-primary my-4 text-white"
             />
           </form>
@@ -129,4 +136,4 @@ const NewChocolates = () => {
   );
 };
 
-export default NewChocolates;
+export default UpdateChocolates;
