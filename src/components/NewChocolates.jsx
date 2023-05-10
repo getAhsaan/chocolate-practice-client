@@ -1,5 +1,7 @@
 import React from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const NewChocolates = () => {
   const handleNewChocolate = (event) => {
@@ -21,6 +23,13 @@ const NewChocolates = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        if (data.insertedId) {
+          Swal.fire(
+            "Chocolate Added Successfully!",
+            "You clicked the button!",
+            "success"
+          );
+        }
       });
   };
 
@@ -30,10 +39,12 @@ const NewChocolates = () => {
         Chocolate Management System
       </h1>
       <div className="px-40 mt-8">
-        <button className="btn btn-outline capitalize">
-          <FaLongArrowAltLeft className="me-2"></FaLongArrowAltLeft> All
-          Chocolates{" "}
-        </button>
+        <Link to={"/"}>
+          <button className="btn btn-outline capitalize">
+            <FaLongArrowAltLeft className="me-2"></FaLongArrowAltLeft> All
+            Chocolates
+          </button>
+        </Link>
         <div className="bg-orange-50 p-10 m-5 rounded-lg">
           <h1 className="text-black text-2xl text-center font-semibold">
             New Chocolates
